@@ -444,6 +444,22 @@ void Adafruit_MCP2515::writeRegister(uint8_t address, uint8_t value) {
   spi_dev->write(buffer, 3);
 }
 
+void Adafruit_MCP2515::EnableClockOut(void)
+{
+  // Enable clock output on MCP2515
+
+  modifyRegister(REG_CANCTRL, 0xE0, 0x80); // Set CANCTRL to Config mode
+
+  modifyRegister(REG_CANCTRL, 0x04, 0x04); // Set Clock Output Enable and System Clock/1
+
+  modifyRegister(REG_CNF3, 0x80, 0x00); // Set CNF3 CLKOUT pin is enabled for clock out function
+
+  modifyRegister(REG_CANCTRL, 0xE0, 0x00); // Set CANCTRL to Normal Operation mode
+
+  return true;
+
+}
+
 void Adafruit_MCP2515::onInterrupt() { instance->handleInterrupt(); }
 
 Adafruit_MCP2515 *Adafruit_MCP2515::instance;
