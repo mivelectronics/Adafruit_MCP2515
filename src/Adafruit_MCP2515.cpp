@@ -282,10 +282,11 @@ int Adafruit_MCP2515::filter(int id, int mask) {
   mask &= 0x7ff;
 
   // config mode
-  writeRegister(REG_CANCTRL, 0x80);
-  if (readRegister(REG_CANCTRL) != 0x80) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x80); // Set CANCTRL to Config mode
+  //writeRegister(REG_CANCTRL, 0x80);
+  // if (readRegister(REG_CANCTRL) != 0x80) {
+  //   return 0;
+  // }
 
   for (int n = 0; n < 2; n++) {
     // standard only
@@ -306,10 +307,11 @@ int Adafruit_MCP2515::filter(int id, int mask) {
   }
 
   // normal mode
-  writeRegister(REG_CANCTRL, 0x00);
-  if (readRegister(REG_CANCTRL) != 0x00) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x00); // Set CANCTRL to Normal Operation mode
+  // writeRegister(REG_CANCTRL, 0x00);
+  // if (readRegister(REG_CANCTRL) != 0x00) {
+  //   return 0;
+  // }
 
   return 1;
 }
@@ -319,10 +321,11 @@ int Adafruit_MCP2515::filterExtended(long id, long mask) {
   mask &= 0x1FFFFFFF;
 
   // config mode
-  writeRegister(REG_CANCTRL, 0x80);
-  if (readRegister(REG_CANCTRL) != 0x80) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x80); // Set CANCTRL to Config mode
+  // writeRegister(REG_CANCTRL, 0x80);
+  // if (readRegister(REG_CANCTRL) != 0x80) {
+  //   return 0;
+  // }
 
   for (int n = 0; n < 2; n++) {
     // extended only
@@ -345,46 +348,59 @@ int Adafruit_MCP2515::filterExtended(long id, long mask) {
   }
 
   // normal mode
-  writeRegister(REG_CANCTRL, 0x00);
-  if (readRegister(REG_CANCTRL) != 0x00) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x00); // Set CANCTRL to Normal Operation mode
+  // writeRegister(REG_CANCTRL, 0x00);
+  // if (readRegister(REG_CANCTRL) != 0x00) {
+  //   return 0;
+  // }
 
   return 1;
 }
 
 int Adafruit_MCP2515::observe() {
-  writeRegister(REG_CANCTRL, 0x80);
-  if (readRegister(REG_CANCTRL) != 0x80) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x80); // Set CANCTRL to Config mode
+  // writeRegister(REG_CANCTRL, 0x80);
+  // if (readRegister(REG_CANCTRL) != 0x80) {
+  //   return 0;
+  // }
 
   return 1;
 }
 
 int Adafruit_MCP2515::loopback() {
-  writeRegister(REG_CANCTRL, 0x40);
-  if (readRegister(REG_CANCTRL) != 0x40) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x40); // Set loopback mode
+  // writeRegister(REG_CANCTRL, 0x40);
+  // if (readRegister(REG_CANCTRL) != 0x40) {
+  //   return 0;
+  // }
 
   return 1;
 }
 
 int Adafruit_MCP2515::sleep() {
-  writeRegister(REG_CANCTRL, 0x01);
-  if (readRegister(REG_CANCTRL) != 0x01) {
-    return 0;
-  }
+  modifyRegister(REG_CANCTRL, 0xE0, 0x20); // Set loopback mode
+  // writeRegister(REG_CANCTRL, 0x01);
+  // if (readRegister(REG_CANCTRL) != 0x01) {
+  //   return 0;
+  // }
 
   return 1;
 }
 
 int Adafruit_MCP2515::wakeup() {
-  writeRegister(REG_CANCTRL, 0x00);
-  if (readRegister(REG_CANCTRL) != 0x00) {
-    return 0;
-  }
+  normalMode();
+
+  return 1;
+}
+
+int Adafruit_MCP2515::normalMode() {
+  modifyRegister(REG_CANCTRL, 0xE0, 0x00); // Set CANCTRL to Normal Operation mode
+
+  return 1;
+}
+
+int Adafruit_MCP2515::s ListenOnlyMode() {
+  modifyRegister(REG_CANCTRL, 0xE0, 0x60); // Set CANCTRL to Listen Only mode
 
   return 1;
 }

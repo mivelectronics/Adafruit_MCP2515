@@ -37,6 +37,9 @@ public:
   virtual int loopback();
   virtual int sleep();
   virtual int wakeup();
+  virtual int normalMode();
+  virtual int listenOnlyMode();
+
 
   void setClockFrequency(long clockFrequency);
 
