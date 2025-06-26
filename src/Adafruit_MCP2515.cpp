@@ -399,7 +399,7 @@ int Adafruit_MCP2515::normalMode() {
   return 1;
 }
 
-int Adafruit_MCP2515::s ListenOnlyMode() {
+int Adafruit_MCP2515::ListenOnlyMode() {
   modifyRegister(REG_CANCTRL, 0xE0, 0x60); // Set CANCTRL to Listen Only mode
 
   return 1;
