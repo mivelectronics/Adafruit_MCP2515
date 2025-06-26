@@ -444,7 +444,7 @@ void Adafruit_MCP2515::writeRegister(uint8_t address, uint8_t value) {
   spi_dev->write(buffer, 3);
 }
 
-void Adafruit_MCP2515::EnableClockOut(void)
+bool Adafruit_MCP2515::EnableClockOut(void)
 {
   // Enable clock output on MCP2515
 
